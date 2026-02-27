@@ -1,8 +1,48 @@
-import { updateSession } from '@/lib/supabase/middleware'
-import { type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
+
+const PUBLIC_ROUTES = ['/login', '/registro', '/recuperar']
 
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  const { pathname } = request.nextUrl
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.next({ request })
+  }
+
+  let response = NextResponse.next({ request })
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll()
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+        response = NextResponse.next({ request })
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options)
+        )
+      },
+    },
+  })
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname.startsWith(route))
+
+  if (!user && !isPublicRoute) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  if (user && isPublicRoute) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  return response
 }
 
 export const config = {
