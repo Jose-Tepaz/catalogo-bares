@@ -86,8 +86,16 @@ export default function RegistroPage() {
       toast.error("Las contraseñas no coinciden")
       return
     }
-    if (password.length < 6) {
-      toast.error("La contraseña debe tener al menos 6 caracteres")
+    if (password.length < 8) {
+      toast.error("La contraseña debe tener al menos 8 caracteres")
+      return
+    }
+    if (!/[A-Z]/.test(password)) {
+      toast.error("La contraseña debe tener al menos una letra mayúscula")
+      return
+    }
+    if (!/[0-9]/.test(password)) {
+      toast.error("La contraseña debe tener al menos un número")
       return
     }
     if (!acceptTerms) {
@@ -196,7 +204,7 @@ export default function RegistroPage() {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="h-10 pr-10 border-border focus-visible:ring-accent/40"
@@ -211,6 +219,9 @@ export default function RegistroPage() {
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            Minimo 8 caracteres, una mayuscula y un numero
+          </p>
         </div>
 
         <div>

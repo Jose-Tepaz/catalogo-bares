@@ -7,19 +7,33 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Send, Mail } from "lucide-react"
+import { toast } from "sonner"
+import { createClient } from "@/lib/supabase/client"
 
 export default function RecuperarPage() {
   const [email, setEmail] = useState("")
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const supabase = createClient()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1000))
-    setSent(true)
-    setLoading(false)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/settings`,
+      })
+      if (error) {
+        toast.error("No se pudo enviar el correo. Intenta de nuevo.")
+        return
+      }
+      setSent(true)
+    } catch {
+      toast.error("Ocurrio un error. Intenta de nuevo.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (sent) {

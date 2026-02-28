@@ -79,6 +79,7 @@ export default function LoginPage() {
       }
 
       toast.success("Bienvenido de vuelta")
+      router.refresh()
       router.push("/")
     } catch (err) {
       console.error("Error inesperado al iniciar sesión:", err)
