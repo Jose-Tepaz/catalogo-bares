@@ -110,6 +110,7 @@ export default function RegistroPage() {
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/`,
           data: {
             name,
             birthdate,
