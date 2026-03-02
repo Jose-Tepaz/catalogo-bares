@@ -18,6 +18,7 @@ import {
   Bell,
   LogOut,
   Save,
+  Lock,
 } from "lucide-react"
 import { useEffect } from "react"
 
@@ -32,6 +33,10 @@ export default function SettingsPage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [notifications, setNotifications] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false)
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmNewPassword, setConfirmNewPassword] = useState("")
+  const [savingPassword, setSavingPassword] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -52,7 +57,10 @@ export default function SettingsPage() {
     loadUser()
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setIsPasswordRecovery(true)
+      }
       loadUser()
     })
 
@@ -98,6 +106,44 @@ export default function SettingsPage() {
       toast.success("Cambios guardados")
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleSavePassword() {
+    if (!newPassword || !confirmNewPassword) {
+      toast.error("Completa ambos campos de contraseña")
+      return
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast.error("Las contraseñas no coinciden")
+      return
+    }
+    if (newPassword.length < 8) {
+      toast.error("La contraseña debe tener al menos 8 caracteres")
+      return
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      toast.error("La contraseña debe tener al menos una mayuscula")
+      return
+    }
+    if (!/[0-9]/.test(newPassword)) {
+      toast.error("La contraseña debe tener al menos un numero")
+      return
+    }
+    setSavingPassword(true)
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword })
+      if (error) {
+        toast.error(error.message)
+        return
+      }
+      toast.success("Contraseña actualizada correctamente")
+      setNewPassword("")
+      setConfirmNewPassword("")
+      setIsPasswordRecovery(false)
+      router.push("/")
+    } finally {
+      setSavingPassword(false)
     }
   }
 
@@ -237,6 +283,66 @@ export default function SettingsPage() {
                 Debes ser mayor de 18 años
               </p>
             </div>
+          </div>
+
+          <Separator className="my-8" />
+
+          {/* Password section */}
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <Lock className="h-4 w-4 text-accent" />
+                {isPasswordRecovery ? "Crea tu nueva contraseña" : "Cambiar contraseña"}
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {isPasswordRecovery
+                  ? "Ingresa tu nueva contraseña para recuperar tu cuenta"
+                  : "Minimo 8 caracteres, una mayuscula y un numero"}
+              </p>
+            </div>
+            <div>
+              <Label htmlFor="new-password" className="text-sm font-medium text-foreground">
+                Nueva contraseña
+              </Label>
+              <Input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Nueva contraseña"
+                className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+              />
+            </div>
+            <div>
+              <Label htmlFor="confirm-new-password" className="text-sm font-medium text-foreground">
+                Confirmar nueva contraseña
+              </Label>
+              <Input
+                id="confirm-new-password"
+                type="password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                placeholder="Repite tu nueva contraseña"
+                className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+              />
+            </div>
+            <Button
+              onClick={handleSavePassword}
+              disabled={savingPassword || !newPassword || !confirmNewPassword}
+              className="w-full h-10 bg-accent text-white hover:bg-accent/90 font-medium"
+            >
+              {savingPassword ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  Guardando...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" />
+                  Guardar nueva contraseña
+                </span>
+              )}
+            </Button>
           </div>
 
           <Separator className="my-8" />

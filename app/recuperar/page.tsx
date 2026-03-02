@@ -22,7 +22,7 @@ export default function RecuperarPage() {
     setLoading(true)
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/settings`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/nueva-contrasena`,
       })
       if (error) {
         toast.error("No se pudo enviar el correo. Intenta de nuevo.")
