@@ -1,7 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_ROUTES = ['/login', '/registro', '/recuperar', '/nueva-contrasena', '/auth']
+const PUBLIC_ROUTES = ['/login', '/registro', '/recuperar', '/auth']
+const PASSWORD_RESET_ROUTES = ['/nueva-contrasena']
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -33,11 +34,15 @@ export async function proxy(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname.startsWith(route))
+  const isPasswordResetRoute = PASSWORD_RESET_ROUTES.some(route => pathname.startsWith(route))
 
-  if (!user && !isPublicRoute) {
+  // Si no esta logueado y no es ruta publica ni reset, mandar al login
+  if (!user && !isPublicRoute && !isPasswordResetRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  // Si esta logueado e intenta ir al login/registro, mandar al inicio
+  // Pero si va a nueva-contrasena, dejarlo pasar siempre
   if (user && isPublicRoute) {
     return NextResponse.redirect(new URL('/', request.url))
   }
