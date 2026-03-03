@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { useParticipations } from "@/lib/use-participations"
 import { createClient } from "@/lib/supabase/client"
@@ -68,25 +69,29 @@ function SidebarContent() {
     <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground">
       {/* Brand */}
       <div className="px-5 pt-6 pb-2">
-        <div className="flex items-center gap-2.5 mb-6">
-          <Wine className="h-5 w-5 text-sidebar-primary" />
-          <span className="text-sm font-bold tracking-wide uppercase text-sidebar-primary">
-            La Ruta Coctelera
-          </span>
+        <div className="flex items-center mb-6">
+          <Image
+            src="/logo.svg"
+            alt="La Ruta Coctelera"
+            width={160}
+            height={48}
+            className="w-auto h-10 object-contain"
+            priority
+          />
         </div>
       </div>
 
       {/* User profile */}
       <div className="px-5 pb-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sidebar-accent border border-sidebar-border">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-sidebar-border" style={{ backgroundColor: '#003D6A' }}>
             <User className="h-4 w-4 text-sidebar-foreground" />
           </div>
           <div className="min-w-0">
             <h2 className="text-sm font-semibold text-sidebar-foreground">
               {userLabel}
             </h2>
-            <span className="text-xs text-sidebar-foreground/50">
+            <span className="text-xs text-sidebar-foreground/50" style={{ fontFamily: 'Work Sans, sans-serif' }}>
               {userEmail || "—"}
             </span>
           </div>
@@ -122,7 +127,7 @@ function SidebarContent() {
             >
               <Trophy className={`h-4 w-4 ${pathname === "/participaciones" ? "text-sidebar-primary" : ""}`} />
               Participaciones
-              <span className="ml-auto font-mono text-[10px] bg-sidebar-primary text-sidebar-primary-foreground rounded-full px-1.5 py-0.5 font-bold">
+              <span className="ml-auto font-mono text-[10px] rounded-full px-1.5 py-0.5 font-bold text-white" style={{ backgroundColor: '#003D6A' }}>
                 {completedCount}
               </span>
             </Link>

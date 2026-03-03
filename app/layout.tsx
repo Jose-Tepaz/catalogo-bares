@@ -1,22 +1,24 @@
 import type { Metadata, Viewport } from 'next'
-import { DM_Sans, Space_Mono } from 'next/font/google'
+import { Work_Sans } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from 'sonner'
 import './globals.css'
 
-const dmSans = DM_Sans({
+const workSans = Work_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
 })
 
-const spaceMono = Space_Mono({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-mono',
+const nimbusSans = localFont({
+  src: '../public/fonts/nimbus-sans-condensed-l-black.otf',
+  variable: '--font-heading',
+  display: 'swap',
 })
 
+
 export const metadata: Metadata = {
-  title: 'La Ruta Coctelera - Los mejores bares de Mexico',
+  title: 'Cointreau - Los mejores bares de Mexico',
   description:
     'Descubre, visita y registra tu experiencia en los mejores bares de Mexico.',
   icons: {
@@ -52,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${dmSans.variable} ${spaceMono.variable} font-sans antialiased`}
+        className={`${workSans.variable} ${nimbusSans.variable} font-sans antialiased`}
       >
         {children}
         <Toaster

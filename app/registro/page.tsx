@@ -142,19 +142,19 @@ export default function RegistroPage() {
   return (
     <AuthLayout
       title="Crear cuenta"
-      subtitle="Únete a La Ruta Coctelera y comienza tu recorrido"
+      subtitle="Únete a Cointreau y comienza tu recorrido"
     >
       {/* Aviso 18+ */}
-      <div className="mb-5 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-3 dark:border-amber-900/40 dark:bg-amber-950/30">
-        <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
-        <p className="text-xs text-gray-800 dark:text-gray-200 leading-relaxed">
+      <div className="mb-5 flex items-start gap-2.5 rounded-lg px-3.5 py-3" style={{ backgroundColor: '#E84922', borderRadius: '6px' }}>
+        <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-white" />
+        <p className="text-xs text-white leading-relaxed">
           Esta plataforma es exclusivamente para personas <span className="font-semibold">mayores de 18 años</span>.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="name" className="text-sm font-medium text-foreground">
+          <Label htmlFor="name" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Nombre
           </Label>
           <Input
@@ -169,7 +169,7 @@ export default function RegistroPage() {
         </div>
 
         <div>
-          <Label htmlFor="email" className="text-sm font-medium text-foreground">
+          <Label htmlFor="email" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Email
           </Label>
           <Input
@@ -184,7 +184,7 @@ export default function RegistroPage() {
         </div>
 
         <div>
-          <Label htmlFor="birthdate" className="text-sm font-medium text-foreground">
+          <Label htmlFor="birthdate" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Fecha de nacimiento
           </Label>
           <Input
@@ -198,7 +198,7 @@ export default function RegistroPage() {
         </div>
 
         <div>
-          <Label htmlFor="password" className="text-sm font-medium text-foreground">
+          <Label htmlFor="password" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Contraseña
           </Label>
           <div className="relative mt-1.5">
@@ -226,7 +226,7 @@ export default function RegistroPage() {
         </div>
 
         <div>
-          <Label htmlFor="confirm" className="text-sm font-medium text-foreground">
+          <Label htmlFor="confirm" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Confirmar contraseña
           </Label>
           <Input
@@ -272,7 +272,8 @@ export default function RegistroPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-10 bg-foreground text-background hover:bg-foreground/90 font-medium"
+          className="w-full h-10 font-medium text-white hover:opacity-90"
+          style={{ backgroundColor: '#E84922' }}
         >
           {loading ? (
             <span className="flex items-center gap-2">

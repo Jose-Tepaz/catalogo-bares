@@ -33,13 +33,13 @@ export function BarCard({ bar }: BarCardProps) {
               alt={bar.name}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-full bg-foreground/80 px-2 py-1">
-              <CheckCircle2 className="h-3 w-3 text-accent" />
-              <span className="text-[10px] font-semibold text-background">Visitado</span>
+            <div className="absolute top-2.5 right-2.5 flex items-center gap-1 px-2 py-1" style={{ backgroundColor: '#E84922', borderRadius: '5px' }}>
+              <CheckCircle2 className="h-3 w-3 text-white" />
+              <span className="text-[10px] font-semibold text-white">Visitado</span>
             </div>
             {/* Hover: Editar */}
             <div className="absolute inset-0 flex items-end justify-center pb-5 opacity-0 transition-all duration-300 group-hover:bg-foreground/25 group-hover:opacity-100">
-              <span className="flex items-center gap-1.5 rounded-full bg-background px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-lg translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
+              <span className="flex items-center gap-1.5 bg-background px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-lg translate-y-2 transition-transform duration-300 group-hover:translate-y-0" style={{ borderRadius: '5px' }}>
                 <Pencil className="h-3 w-3" />
                 Editar
               </span>
@@ -53,7 +53,7 @@ export function BarCard({ bar }: BarCardProps) {
             </span>
             {/* Hover: Participar */}
             <div className="absolute inset-0 flex items-end justify-center pb-5 opacity-0 transition-all duration-300 group-hover:bg-foreground/10 group-hover:opacity-100">
-              <span className="flex items-center gap-1.5 rounded-full bg-foreground px-3.5 py-1.5 text-xs font-semibold text-background shadow-lg translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
+              <span className="flex items-center gap-1.5 bg-foreground px-3.5 py-1.5 text-xs font-semibold text-background shadow-lg translate-y-2 transition-transform duration-300 group-hover:translate-y-0" style={{ borderRadius: '5px' }}>
                 Participar
                 <ArrowRight className="h-3.5 w-3.5" />
               </span>
@@ -64,7 +64,7 @@ export function BarCard({ bar }: BarCardProps) {
 
       {/* Text below */}
       <div className="pt-3">
-        <h3 className="text-sm font-semibold text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2">
+        <h3 className="text-lg font-bold text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
           {bar.name}
         </h3>
         <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">

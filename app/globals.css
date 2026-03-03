@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -16,27 +17,28 @@
   --secondary-foreground: oklch(0.13 0 0);
   --muted: oklch(0.95 0.005 85);
   --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.75 0.11 90);
-  --accent-foreground: oklch(0.13 0 0);
+  --accent: oklch(0.57 0.21 32);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.90 0.005 85);
   --input: oklch(0.90 0.005 85);
-  --ring: oklch(0.75 0.11 90);
+  --ring: oklch(0.57 0.21 32);
   --chart-1: oklch(0.75 0.11 90);
   --chart-2: oklch(0.08 0 0);
   --chart-3: oklch(0.55 0.04 90);
   --chart-4: oklch(0.65 0.07 90);
   --chart-5: oklch(0.35 0 0);
   --radius: 0.5rem;
-  --sidebar: oklch(0.08 0 0);
-  --sidebar-foreground: oklch(0.88 0.005 90);
-  --sidebar-primary: oklch(0.78 0.11 90);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.15 0 0);
-  --sidebar-accent-foreground: oklch(0.88 0.005 90);
-  --sidebar-border: oklch(0.18 0 0);
-  --sidebar-ring: oklch(0.78 0.11 90);
+  --blue: #003D6A;
+  --sidebar: oklch(0.57 0.21 32);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0.57 0.21 32);
+  --sidebar-accent: oklch(1 0 0 / 0.15);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 0.20);
+  --sidebar-ring: oklch(0.57 0.21 32);
   --success: oklch(0.60 0.15 150);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.75 0.11 90);
@@ -56,26 +58,26 @@
   --secondary-foreground: oklch(0.93 0.005 85);
   --muted: oklch(0.20 0 0);
   --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.78 0.11 90);
-  --accent-foreground: oklch(0.06 0 0);
+  --accent: oklch(0.57 0.21 32);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(0.93 0.005 90);
   --border: oklch(0.18 0 0);
   --input: oklch(0.14 0 0);
-  --ring: oklch(0.78 0.11 90);
+  --ring: oklch(0.57 0.21 32);
   --chart-1: oklch(0.78 0.11 90);
   --chart-2: oklch(0.93 0.005 90);
   --chart-3: oklch(0.55 0.04 90);
   --chart-4: oklch(0.65 0.07 90);
   --chart-5: oklch(0.35 0 0);
-  --sidebar: oklch(0.06 0 0);
-  --sidebar-foreground: oklch(0.88 0.005 90);
-  --sidebar-primary: oklch(0.78 0.11 90);
-  --sidebar-primary-foreground: oklch(0.06 0 0);
-  --sidebar-accent: oklch(0.12 0 0);
-  --sidebar-accent-foreground: oklch(0.88 0.005 90);
-  --sidebar-border: oklch(0.15 0 0);
-  --sidebar-ring: oklch(0.78 0.11 90);
+  --sidebar: oklch(0.57 0.21 32);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0.57 0.21 32);
+  --sidebar-accent: oklch(1 0 0 / 0.15);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.50 0.21 32);
+  --sidebar-ring: oklch(0.57 0.21 32);
   --success: oklch(0.60 0.15 150);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.78 0.11 90);
@@ -83,8 +85,9 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-sans, 'DM Sans', sans-serif);
-  --font-mono: var(--font-mono, 'Space Mono', monospace);
+  --font-sans: var(--font-sans, 'Work Sans', sans-serif);
+  --font-heading: var(--font-heading, 'NimbusSans', sans-serif);
+  --font-mono: var(--font-mono, monospace);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

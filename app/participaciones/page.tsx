@@ -194,13 +194,14 @@ export default function ParticipacionesPage() {
                           </p>
                         </div>
                         <Link href={`/bar/${bar.id}`}>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="shrink-0 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-accent"
+                          <button
+                            className="shrink-0 flex items-center justify-center h-8 w-8 transition-all duration-200 hover:text-white"
+                            style={{ backgroundColor: '#003D6A', borderRadius: '5px', color: 'white' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#002a4a')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#003D6A')}
                           >
                             <Pencil className="h-3.5 w-3.5" />
-                          </Button>
+                          </button>
                         </Link>
                       </div>
 

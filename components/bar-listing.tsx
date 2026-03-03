@@ -84,8 +84,8 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 <Menu className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-lg font-bold text-foreground tracking-tight">
-                  La Ruta <span className="text-accent">Coctelera</span>
+                <h1 className="text-2xl font-bold text-foreground tracking-tight" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
+                  La Ruta <span className="text-accent">Cointreau</span>
                 </h1>
                 <p className="text-[11px] text-muted-foreground tracking-wide">
                   Los mejores bares de Mexico
@@ -99,9 +99,10 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 onClick={() => setStateId("todos")}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
                   stateId === "todos"
-                    ? "bg-foreground text-background border-foreground shadow-sm"
+                    ? "text-white border-transparent shadow-sm"
                     : "bg-background text-foreground border-border hover:border-foreground/40 hover:shadow-sm"
                 }`}
+                style={stateId === "todos" ? { backgroundColor: '#003D6A' } : {}}
               >
                 Todos
                 <span className={`font-mono text-[10px] rounded-full px-1.5 py-0.5 ${stateId === "todos" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"}`}>
@@ -114,9 +115,10 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                   onClick={() => setStateId(estado.id)}
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     stateId === estado.id
-                      ? "bg-foreground text-background border-foreground shadow-sm"
+                      ? "text-white border-transparent shadow-sm"
                       : "bg-background text-foreground border-border hover:border-foreground/40 hover:shadow-sm"
                   }`}
+                  style={stateId === estado.id ? { backgroundColor: '#003D6A' } : {}}
                 >
                   {estado.name}
                   {barCountByState[estado.id] !== undefined && (
