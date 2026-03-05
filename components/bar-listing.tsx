@@ -95,7 +95,7 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
             </div>
 
             {/* Estado pills */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4 overflow-x-auto no-scrollbar whitespace-nowrap">
               <button
                 onClick={() => setStateId("todos")}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
@@ -132,7 +132,7 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
             </div>
 
             {/* Filters row */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-nowrap items-center gap-3">
               <div className="relative flex-1 min-w-[200px] max-w-md">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent/60" />
                 <Input
