@@ -6,7 +6,7 @@ import { AuthLayout } from "@/components/auth-layout"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Eye, EyeOff, Lock } from "lucide-react"
+import { Eye, EyeOff, Lock, AlertCircle } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 
@@ -18,28 +18,30 @@ export default function NuevaContrasenaPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setErrorMessage(null)
 
     if (!password || !confirmPassword) {
-      toast.error("Completa todos los campos")
+      setErrorMessage("Completa todos los campos")
       return
     }
     if (password !== confirmPassword) {
-      toast.error("Las contraseñas no coinciden")
+      setErrorMessage("Las contraseñas no coinciden")
       return
     }
     if (password.length < 8) {
-      toast.error("La contraseña debe tener al menos 8 caracteres")
+      setErrorMessage("La contraseña debe tener al menos 8 caracteres")
       return
     }
     if (!/[A-Z]/.test(password)) {
-      toast.error("La contraseña debe tener al menos una mayuscula")
+      setErrorMessage("La contraseña debe tener al menos una mayuscula")
       return
     }
     if (!/[0-9]/.test(password)) {
-      toast.error("La contraseña debe tener al menos un numero")
+      setErrorMessage("La contraseña debe tener al menos un numero")
       return
     }
 
@@ -47,13 +49,13 @@ export default function NuevaContrasenaPage() {
     try {
       const { error } = await supabase.auth.updateUser({ password })
       if (error) {
-        toast.error("No se pudo actualizar la contraseña. El enlace puede haber expirado.")
+        setErrorMessage("No se pudo actualizar la contraseña. El enlace puede haber expirado.")
         return
       }
       toast.success("Contraseña actualizada correctamente")
       router.push("/")
     } catch {
-      toast.error("Ocurrio un error. Intenta de nuevo.")
+      setErrorMessage("Ocurrio un error. Intenta de nuevo.")
     } finally {
       setLoading(false)
     }
@@ -122,6 +124,13 @@ export default function NuevaContrasenaPage() {
             </span>
           )}
         </Button>
+
+        {errorMessage && (
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </form>
     </AuthLayout>
   )

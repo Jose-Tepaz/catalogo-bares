@@ -21,7 +21,7 @@ export function BarCard({ bar }: BarCardProps) {
     <>
       <div className="group block cursor-pointer">
         {/* Image */}
-        <div className="relative aspect-square overflow-hidden rounded-sm bg-muted border border-border/60">
+        <div className="relative aspect-square overflow-hidden rounded-sm bg-muted border border-border/60 rounded-xl">
           {completed ? (
             <>
               <button
@@ -34,7 +34,7 @@ export function BarCard({ bar }: BarCardProps) {
                   src="/completado.png"
                   alt="Completado"
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className=" object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Hover: Editar */}
                 <div className="absolute inset-0 flex items-end justify-center pb-5 opacity-0 transition-all duration-300 group-hover:bg-foreground/25 group-hover:opacity-100">

@@ -105,7 +105,7 @@ function SidebarContent() {
             <h2 className="text-sm font-semibold text-sidebar-foreground">
               {userLabel}
             </h2>
-            <span className="text-xs text-sidebar-foreground/50" style={{ fontFamily: 'Work Sans, sans-serif' }}>
+            <span className="text-xs text-sidebar-foreground" style={{ fontFamily: 'Work Sans, sans-serif' }}>
               {userEmail || "—"}
             </span>
           </div>
@@ -122,8 +122,8 @@ function SidebarContent() {
               href="/"
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 pathname === "/"
-                  ? "text-sidebar-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "text-sm font-medium text-sidebar-foreground bg-sidebar-accent"
+                  : "text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
               }`}
             >
               <Compass className={`h-4 w-4 ${pathname === "/" ? "text-sidebar-primary" : ""}`} />
@@ -135,8 +135,8 @@ function SidebarContent() {
               href="/participaciones"
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 pathname === "/participaciones"
-                  ? "font-medium text-sidebar-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "text-sm font-medium text-sidebar-foreground bg-sidebar-accent"
+                  : "text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
               }`}
             >
               <Trophy className={`h-4 w-4 ${pathname === "/participaciones" ? "text-sidebar-primary" : ""}`} />
@@ -152,7 +152,7 @@ function SidebarContent() {
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 pathname === "/settings"
                   ? "font-medium text-sidebar-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
               }`}
             >
               <Settings className={`h-4 w-4 ${pathname === "/settings" ? "text-sidebar-primary" : ""}`} />
@@ -167,7 +167,7 @@ function SidebarContent() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex w-full items-center gap-2 text-sidebar-foreground/40 hover:text-sidebar-foreground/70 transition-colors text-xs"
+          className="flex w-full items-center gap-2 text-white hover:text-sidebar-foreground/70 transition-colors text-xs"
         >
           <LogOut className="h-3.5 w-3.5" />
           Cerrar sesion

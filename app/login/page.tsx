@@ -7,7 +7,7 @@ import { AuthLayout } from "@/components/auth-layout"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Eye, EyeOff, ArrowRight } from "lucide-react"
+import { Eye, EyeOff, ArrowRight, AlertCircle } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 
@@ -49,12 +49,14 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [socialLoading, setSocialLoading] = useState<"google" | "facebook" | "apple" | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setErrorMessage(null)
 
     if (!email || !password) {
-      toast.error("Completa todos los campos")
+      setErrorMessage("Completa todos los campos")
       return
     }
 
@@ -74,7 +76,7 @@ export default function LoginPage() {
             ? "Email o contraseña incorrectos"
             : error.message
 
-        toast.error(message)
+        setErrorMessage(message)
         return
       }
 
@@ -83,7 +85,7 @@ export default function LoginPage() {
       router.push("/")
     } catch (err) {
       console.error("Error inesperado al iniciar sesión:", err)
-      toast.error("Ocurrió un error al iniciar sesión. Intenta de nuevo.")
+      setErrorMessage("Ocurrió un error al iniciar sesión. Intenta de nuevo.")
     } finally {
       setLoading(false)
     }
@@ -183,6 +185,13 @@ export default function LoginPage() {
             </span>
           )}
         </Button>
+
+        {errorMessage && (
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </form>
 
       {/* Divider */}

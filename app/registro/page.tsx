@@ -7,7 +7,7 @@ import { AuthLayout } from "@/components/auth-layout"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Eye, EyeOff, ArrowRight, ShieldAlert } from "lucide-react"
+import { Eye, EyeOff, ArrowRight, ShieldAlert, AlertCircle } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 import {
@@ -70,36 +70,38 @@ export default function RegistroPage() {
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [loading, setLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState<"terminos" | "privacidad" | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setErrorMessage(null)
 
     if (!name || !email || !birthdate || !password || !confirmPassword) {
-      toast.error("Completa todos los campos")
+      setErrorMessage("Completa todos los campos")
       return
     }
     if (calcularEdad(birthdate) < 18) {
-      toast.error("Debes ser mayor de 18 años para registrarte")
+      setErrorMessage("Debes ser mayor de 18 años para registrarte")
       return
     }
     if (password !== confirmPassword) {
-      toast.error("Las contraseñas no coinciden")
+      setErrorMessage("Las contraseñas no coinciden")
       return
     }
     if (password.length < 8) {
-      toast.error("La contraseña debe tener al menos 8 caracteres")
+      setErrorMessage("La contraseña debe tener al menos 8 caracteres")
       return
     }
     if (!/[A-Z]/.test(password)) {
-      toast.error("La contraseña debe tener al menos una letra mayúscula")
+      setErrorMessage("La contraseña debe tener al menos una letra mayúscula")
       return
     }
     if (!/[0-9]/.test(password)) {
-      toast.error("La contraseña debe tener al menos un número")
+      setErrorMessage("La contraseña debe tener al menos un número")
       return
     }
     if (!acceptTerms) {
-      toast.error("Debes aceptar los términos y condiciones")
+      setErrorMessage("Debes aceptar los términos y condiciones")
       return
     }
 
@@ -120,7 +122,7 @@ export default function RegistroPage() {
 
       if (error) {
         console.error("Error al crear cuenta:", error)
-        toast.error(error.message)
+        setErrorMessage(error.message)
         return
       }
 
@@ -133,7 +135,7 @@ export default function RegistroPage() {
       }
     } catch (err) {
       console.error("Error inesperado al registrar usuario:", err)
-      toast.error("Ocurrió un error al crear la cuenta. Intenta de nuevo.")
+      setErrorMessage("Ocurrió un error al crear la cuenta. Intenta de nuevo.")
     } finally {
       setLoading(false)
     }
@@ -262,7 +264,7 @@ export default function RegistroPage() {
             <button
               type="button"
               onClick={() => setModalOpen("privacidad")}
-              className="underline underline-offset-2 hover:text-accent transition-colors"
+              className="border-b border-foreground underline underline-offset-2 hover:text-accent transition-colors"
             >
               política de privacidad
             </button>
@@ -273,7 +275,7 @@ export default function RegistroPage() {
           type="submit"
           disabled={loading}
           className="w-full h-10 font-medium text-white hover:opacity-90"
-          style={{ backgroundColor: '#E84922' }}
+          style={{ backgroundColor: '#003D6A' }}
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -287,6 +289,13 @@ export default function RegistroPage() {
             </span>
           )}
         </Button>
+
+        {errorMessage && (
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </form>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">

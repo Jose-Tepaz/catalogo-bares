@@ -39,6 +39,7 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
   const barCountByState = useMemo(() => {
     const counts: Record<string, number> = {}
     for (const bar of initialBars) {
+      if (bar.state_id === null) continue
       counts[bar.state_id] = (counts[bar.state_id] ?? 0) + 1
     }
     return counts
@@ -151,26 +152,7 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 )}
               </div>
 
-              {/* Filtro de categoría desactivado temporalmente por el cliente */}
-              {/* <Select
-                value={categoryFilter}
-                onValueChange={(v) =>
-                  setCategoryFilter(v as BarCategory | "todas")
-                }
-              >
-                <SelectTrigger className="w-[170px] h-9 text-sm border-border bg-background focus:ring-accent/40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="todas">Todas categorias</SelectItem>
-                  {CATEGORIES.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
-
+             
               <Select
                 value={statusFilter}
                 onValueChange={(v) => setStatusFilter(v as StatusFilter)}

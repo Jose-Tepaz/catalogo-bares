@@ -32,7 +32,7 @@
   --radius: 0.5rem;
   --blue: #003D6A;
   --sidebar: oklch(0.57 0.21 32);
-  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-foreground: #FFFFFF;
   --sidebar-primary: oklch(1 0 0);
   --sidebar-primary-foreground: oklch(0.57 0.21 32);
   --sidebar-accent: oklch(1 0 0 / 0.15);

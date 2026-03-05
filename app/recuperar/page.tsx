@@ -6,31 +6,32 @@ import { AuthLayout } from "@/components/auth-layout"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Send, Mail } from "lucide-react"
-import { toast } from "sonner"
+import { ArrowLeft, Send, Mail, AlertCircle } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 export default function RecuperarPage() {
   const [email, setEmail] = useState("")
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const supabase = createClient()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
+    setErrorMessage(null)
     setLoading(true)
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/callback?next=/nueva-contrasena`,
       })
       if (error) {
-        toast.error("No se pudo enviar el correo. Intenta de nuevo.")
+        setErrorMessage("No se pudo enviar el correo. Intenta de nuevo.")
         return
       }
       setSent(true)
     } catch {
-      toast.error("Ocurrio un error. Intenta de nuevo.")
+      setErrorMessage("Ocurrio un error. Intenta de nuevo.")
     } finally {
       setLoading(false)
     }
@@ -104,6 +105,13 @@ export default function RecuperarPage() {
             </span>
           )}
         </Button>
+
+        {errorMessage && (
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </form>
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
