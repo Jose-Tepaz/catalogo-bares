@@ -11,12 +11,23 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
     <div className="flex min-h-screen">
       {/* Left panel - black with gold branding */}
-      <div className="hidden lg:flex lg:w-[420px] lg:flex-col lg:justify-between bg-sidebar p-10">
-        <Link href="/">
+      <div className="hidden lg:flex lg:w-[420px] lg:flex-col lg:justify-between bg-sidebar p-10 relative overflow-hidden">
+        {/* SVG background con opacidad reducida */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "url('/sidebar-bg.svg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.15,
+          }}
+        />
+        <Link href="/" className="relative z-10">
           <Image src="/logo.svg" alt="Cointreau" width={140} height={40} className="h-10 w-auto object-contain" />
         </Link>
 
-        <div>
+        <div className="relative z-10">
           <p className="text-4xl font-bold leading-tight text-balance" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
             <span className="text-white">Descubre </span>
             <span style={{ color: '#003D6A' }}>los mejores bares de </span>
@@ -27,7 +38,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
           </p>
         </div>
 
-        <p className="text-[11px] font-bold tracking-widest uppercase text-white/40" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
+        <p className="relative z-10 text-[11px] font-bold tracking-widest uppercase text-white/40" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
           Cointreau 2026
         </p>
       </div>

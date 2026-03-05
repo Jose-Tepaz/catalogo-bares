@@ -3,22 +3,24 @@
 import { useParticipations } from "@/lib/use-participations"
 import { UserSidebar } from "@/components/user-sidebar"
 import { MobileSidebar } from "@/components/mobile-sidebar"
+import { ParticipationModal } from "@/components/participation-modal"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import {
   Menu,
   ArrowLeft,
-  MapPin,
   Pencil,
   Calendar,
   Wine,
 } from "lucide-react"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import type { Bar, BarCategory } from "@/lib/types"
 
 export default function ParticipacionesPage() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [editingBar, setEditingBar] = useState<Bar | null>(null)
   const { participations, loading, fetchParticipationPhoto } = useParticipations()
   const [allBars, setAllBars] = useState<Bar[]>([])
   const supabase = useMemo(() => createClient(), [])
@@ -164,45 +166,42 @@ export default function ParticipacionesPage() {
                   >
                     {/* Photo */}
                     <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md bg-muted">
-                      {participation.photoDataUrl ? (
-                        <img
-                          src={participation.photoDataUrl}
-                          alt={participation.title}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center">
-                          <Wine className="h-6 w-6 text-accent/30" />
-                        </div>
-                      )}
+                      <Image
+                        src="/completado.png"
+                        alt="Completado"
+                        fill
+                        className="object-cover"
+                      />
                     </div>
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <h3 className="text-sm font-semibold text-foreground truncate">
-                            {participation.title}
+                          <h3
+                            className="text-base font-bold text-foreground truncate"
+                            style={{ fontFamily: 'var(--font-heading), sans-serif' }}
+                          >
+                            {bar.name}
                           </h3>
                           <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
-                            <span>{bar.name}</span>
+                            <span>{bar.city}</span>
                             <span
                               className="inline-block h-2.5 w-px bg-accent/50"
                               aria-hidden="true"
                             />
-                            <span>{bar.city}</span>
+                            <span>{participation.title}</span>
                           </p>
                         </div>
-                        <Link href={`/bar/${bar.id}`}>
-                          <button
-                            className="shrink-0 flex items-center justify-center h-8 w-8 transition-all duration-200 hover:text-white"
-                            style={{ backgroundColor: '#003D6A', borderRadius: '5px', color: 'white' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#002a4a')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#003D6A')}
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                          </button>
-                        </Link>
+                        <button
+                          onClick={() => setEditingBar(bar)}
+                          className="shrink-0 flex items-center justify-center h-8 w-8 transition-all duration-200"
+                          style={{ backgroundColor: '#003D6A', borderRadius: '5px', color: 'white' }}
+                          onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#002a4a')}
+                          onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#003D6A')}
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
                       </div>
 
                       <p className="text-xs text-muted-foreground/80 mt-2 line-clamp-2 leading-relaxed">
@@ -223,6 +222,14 @@ export default function ParticipacionesPage() {
           )}
         </main>
       </div>
+
+      {editingBar && (
+        <ParticipationModal
+          bar={editingBar}
+          open={!!editingBar}
+          onOpenChange={(open) => { if (!open) setEditingBar(null) }}
+        />
+      )}
     </div>
   )
 }

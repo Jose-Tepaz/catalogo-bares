@@ -66,7 +66,21 @@ function SidebarContent() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground">
+    <div
+      className="flex flex-col h-full text-sidebar-foreground relative"
+      style={{ backgroundColor: "#E84922" }}
+    >
+      {/* SVG background con opacidad reducida */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/sidebar-bg.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.15,
+        }}
+      />
       {/* Brand */}
       <div className="px-5 pt-6 pb-2">
         <div className="flex items-center mb-6">
