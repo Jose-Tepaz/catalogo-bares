@@ -58,12 +58,14 @@ export default function RootLayout({
       >
         {children}
         <Toaster
-          position="top-center"
+          position="top-right"
+          closeButton
           toastOptions={{
             style: {
               background: 'var(--card)',
               color: 'var(--card-foreground)',
               border: '1px solid var(--border)',
+              opacity: 0.7,
             },
           }}
         />

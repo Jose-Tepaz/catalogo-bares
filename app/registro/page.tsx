@@ -67,6 +67,7 @@ export default function RegistroPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [loading, setLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState<"terminos" | "privacidad" | null>(null)
@@ -130,7 +131,18 @@ export default function RegistroPage() {
         toast.success("Cuenta creada, bienvenido")
         router.push("/")
       } else {
-        toast.success("Cuenta creada. Revisa tu correo para confirmar.")
+        toast.success("¡Revisa tu correo para confirmar tu cuenta!", {
+          description: "Si no ves el email, consulta tu bandeja de spam.",
+          duration: Infinity,
+          style: {
+            background: "#16a34a",
+            color: "#ffffff",
+            border: "none",
+            fontSize: "0.95rem",
+            
+          },
+          descriptionClassName: "!text-white/90",
+        })
         router.push("/login")
       }
     } catch (err) {
@@ -231,15 +243,25 @@ export default function RegistroPage() {
           <Label htmlFor="confirm" className="text-sm font-medium" style={{ color: '#003D6A' }}>
             Confirmar contraseña
           </Label>
-          <Input
-            id="confirm"
-            type="password"
-            placeholder="Repite tu contraseña"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
-            autoComplete="new-password"
-          />
+          <div className="relative mt-1.5">
+            <Input
+              id="confirm"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Repite tu contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40"
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showConfirmPassword ? "Ocultar" : "Mostrar"}
+            >
+              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
 
         {/* Términos y condiciones */}
