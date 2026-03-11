@@ -394,6 +394,8 @@ export default function RegistroPage() {
             <GoogleIcon />
           )}
         </button>
+        
+        {/*
         <button
           type="button"
           onClick={() => handleSocialLogin("facebook")}
@@ -420,6 +422,7 @@ export default function RegistroPage() {
             <AppleIcon />
           )}
         </button>
+        */}
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">

@@ -221,6 +221,7 @@ export default function LoginPage() {
             <GoogleIcon />
           )}
         </button>
+        {/*
         <button
           type="button"
           onClick={() => handleSocialLogin("facebook")}
@@ -247,6 +248,7 @@ export default function LoginPage() {
             <AppleIcon />
           )}
         </button>
+        */}
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
