@@ -1,6 +1,5 @@
 -- ============================================================
 -- Tabla: estados
--- Solo 3 estados por ahora; info definitiva se agregará después
 -- ============================================================
 CREATE TABLE IF NOT EXISTS estados (
   id   TEXT PRIMARY KEY,
@@ -9,9 +8,9 @@ CREATE TABLE IF NOT EXISTS estados (
 );
 
 INSERT INTO estados (id, name, slug) VALUES
-  ('cdmx',   'Ciudad de México', 'ciudad-de-mexico'),
-  ('jal',    'Jalisco',          'jalisco'),
-  ('nl',     'Nuevo León',       'nuevo-leon')
+  ('cdmx',         'CDMX',         'cdmx'),
+  ('guadalajara',  'Guadalajara',  'guadalajara'),
+  ('riviera-maya', 'Riviera Maya', 'riviera-maya')
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================
@@ -29,18 +28,17 @@ UPDATE bars SET state_id = 'cdmx' WHERE id IN (
   'salon-rios-cdmx'
 );
 
--- Jalisco (Guadalajara)
-UPDATE bars SET state_id = 'jal' WHERE id IN (
+-- Guadalajara
+UPDATE bars SET state_id = 'guadalajara' WHERE id IN (
   'pare-de-sufrir-gdl',
   'la-mezcalera-gdl',
   'casa-bariachi-gdl'
 );
 
--- Nuevo León (Monterrey)
-UPDATE bars SET state_id = 'nl' WHERE id IN (
-  'maviri-mty',
-  'finca-altozano-mty',
-  'cerveceria-insurgente-mty'
+-- Riviera Maya
+UPDATE bars SET state_id = 'riviera-maya' WHERE id IN (
+  'coco-bongo-cancun',
+  'la-mezcaleria-cancun'
 );
 
 -- ============================================================
@@ -50,14 +48,14 @@ INSERT INTO bars (id, name, city, address, category, image_url, state_id) VALUES
   -- Ciudad de México
   ('xaman-cdmx',        'Xaman Bar',            'Ciudad de Mexico', 'Colima 378, Roma Norte',              'Bar de cocteles',      NULL, 'cdmx'),
   ('pulqueria-ingrata',  'Pulquería La Ingrata', 'Ciudad de Mexico', 'Mesones 26, Centro Histórico',        'Cantina',              NULL, 'cdmx'),
-  -- Jalisco
-  ('parker-gdl',         'Parker & Lenox',       'Guadalajara',      'Av. Inglaterra 3128, Vallarta Norte', 'Speakeasy',            NULL, 'jal'),
-  ('diana-rooftop-gdl',  'Diana Rooftop',        'Guadalajara',      'Av. López Mateos Sur 2077, Chapalita','Rooftop',              NULL, 'jal'),
-  ('sabina-gdl',         'Sabina Berrer',        'Guadalajara',      'Hidalgo 1935, Americana',             'Bar de cocteles',      NULL, 'jal'),
-  -- Nuevo León
-  ('hangar-mty',         'Hangar 33',            'Monterrey',        'Av. Constitución 110, Centro',        'Cerveceria artesanal', NULL, 'nl'),
-  ('catedral-bar-mty',   'Bar Catedral',         'Monterrey',        'Padre Mier 248, Centro',              'Cantina',              NULL, 'nl'),
-  ('ix-rooftop-mty',     'IX Rooftop',           'San Pedro Garza García', 'Calzada del Valle 106, Del Valle', 'Rooftop',           NULL, 'nl')
+  -- Guadalajara
+  ('parker-gdl',         'Parker & Lenox',       'Guadalajara',      'Av. Inglaterra 3128, Vallarta Norte', 'Speakeasy',            NULL, 'guadalajara'),
+  ('diana-rooftop-gdl',  'Diana Rooftop',        'Guadalajara',      'Av. López Mateos Sur 2077, Chapalita','Rooftop',              NULL, 'guadalajara'),
+  ('sabina-gdl',         'Sabina Berrer',        'Guadalajara',      'Hidalgo 1935, Americana',             'Bar de cocteles',      NULL, 'guadalajara'),
+  -- Sin estado asignado (Monterrey no corresponde a ninguno de los 3 estados)
+  ('hangar-mty',         'Hangar 33',            'Monterrey',        'Av. Constitución 110, Centro',        'Cerveceria artesanal', NULL, NULL),
+  ('catedral-bar-mty',   'Bar Catedral',         'Monterrey',        'Padre Mier 248, Centro',              'Cantina',              NULL, NULL),
+  ('ix-rooftop-mty',     'IX Rooftop',           'San Pedro Garza García', 'Calzada del Valle 106, Del Valle', 'Rooftop',           NULL, NULL)
 ON CONFLICT (id) DO NOTHING;
 
 -- Índice para filtrar bares por estado

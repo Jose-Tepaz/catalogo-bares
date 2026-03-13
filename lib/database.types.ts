@@ -18,6 +18,9 @@ export interface Database {
           category: string
           image_url: string | null
           state_id: string | null
+          city_id: string | null
+          hero_drinks: string[]
+          google_maps_url: string | null
           created_at: string
           updated_at: string
         }
@@ -29,6 +32,9 @@ export interface Database {
           category: string
           image_url?: string | null
           state_id?: string | null
+          city_id?: string | null
+          hero_drinks?: string[]
+          google_maps_url?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -40,6 +46,9 @@ export interface Database {
           category?: string
           image_url?: string | null
           state_id?: string | null
+          city_id?: string | null
+          hero_drinks?: string[]
+          google_maps_url?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -59,6 +68,26 @@ export interface Database {
           id?: string
           name?: string
           slug?: string
+        }
+      }
+      ciudades: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          state_id: string | null
+        }
+        Insert: {
+          id: string
+          name: string
+          slug: string
+          state_id?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          state_id?: string | null
         }
       }
       categorias: {

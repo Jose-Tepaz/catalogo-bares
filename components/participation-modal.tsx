@@ -96,7 +96,7 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="p-0 border-0 overflow-hidden bg-primary"
+        className="p-0 border-0 overflow-hidden bg-primary  w-[90%]"
         style={{ maxWidth: "400px" }}
       >
         <DialogTitle className="sr-only">
