@@ -7,7 +7,7 @@ import './globals.css'
 
 const workSans = Work_Sans({
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-body',
 })
 
 const nimbusSans = localFont({
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  themeColor: '#fa4616',
   width: 'device-width',
   initialScale: 1,
 }
@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${workSans.variable} ${nimbusSans.variable} font-sans antialiased`}
+        className={`${workSans.variable} ${nimbusSans.variable} font-sans antialiased bg-primary`}
       >
         {children}
         <Toaster

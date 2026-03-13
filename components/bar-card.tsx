@@ -91,18 +91,18 @@ export function BarCard({ bar }: BarCardProps) {
         </div>
 
         {/* Text below */}
-        <Link href={`/bar/${bar.id}`}>
+        <div onClick={() => setModalOpen(true)}>
           <div className="pt-3">
-            <h3 className="text-lg font-bold text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
+            <h3 className="heading-style-h3 uppercase font-medium text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
               {bar.name}
             </h3>
-            <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <p className="mt-1 flex items-center gap-1.5 text-size-small text-muted-foreground">
               <span>{bar.city}</span>
               <span className="inline-block h-3 w-px bg-accent/50" aria-hidden="true" />
               <span>{bar.category}</span>
             </p>
           </div>
-        </Link>
+        </div>
       </div>
 
       <ParticipationModal

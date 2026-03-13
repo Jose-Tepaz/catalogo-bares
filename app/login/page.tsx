@@ -117,7 +117,7 @@ export default function LoginPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <Label htmlFor="email" className="text-sm font-medium text-foreground">
+          <Label htmlFor="email" className="heading-style-h3 uppercase  font-medium text-white">
             Email
           </Label>
           <Input
@@ -126,7 +126,7 @@ export default function LoginPage() {
             placeholder="tu@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40 text-white"
             autoComplete="email"
           />
         </div>
@@ -135,13 +135,13 @@ export default function LoginPage() {
           <div className="flex items-center justify-between">
             <Label
               htmlFor="password"
-              className="text-sm font-medium text-foreground"
+              className="heading-style-h3 uppercase font-medium text-white"
             >
               Contraseña
             </Label>
             <Link
               href="/recuperar"
-              className="text-xs text-accent hover:text-accent/80 transition-colors"
+              className="text-xs text-primary hover:text-primary/80 transition-colors"
             >
               Olvidaste tu contraseña?
             </Link>
@@ -153,13 +153,13 @@ export default function LoginPage() {
               placeholder="Tu contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-10 pr-10 border-border focus-visible:ring-accent/40"
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40 text-white"  
               autoComplete="current-password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors"
               aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -170,8 +170,7 @@ export default function LoginPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-10 font-medium text-white"
-          style={{ backgroundColor: '#003D6A' }}
+          className="w-full h-10 font-medium text-white bg-primary  hover:bg-primary-color/90"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -181,13 +180,13 @@ export default function LoginPage() {
           ) : (
             <span className="flex items-center gap-2">
               Iniciar Sesión
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 text-white" />
             </span>
           )}
         </Button>
 
         {errorMessage && (
-          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/20 px-3 py-2.5 text-sm text-white">
             <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
             <span>{errorMessage}</span>
           </div>
@@ -200,7 +199,7 @@ export default function LoginPage() {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-3 text-xs text-muted-foreground">
+          <span className="bg-background px-3 text-size-small text-muted-foreground">
             o continuar con
           </span>
         </div>
@@ -251,22 +250,22 @@ export default function LoginPage() {
         */}
       </div>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-white">
         {"No tienes cuenta? "}
         <Link
           href="/registro"
-          className="text-foreground font-medium hover:text-accent transition-colors"
+          className="text-white font-medium hover:text-primary transition-colors"
         >
           Crear cuenta
         </Link>
       </p>
 
       {/* Help link */}
-      <p className="mt-4 text-center text-xs text-muted-foreground/60">
+      <p className="mt-4 text-center text-xs text-white">
         ¿Necesitas ayuda?{" "}
         <a
           href={`mailto:${SUPPORT_EMAIL}`}
-          className="text-muted-foreground hover:text-accent underline underline-offset-2 transition-colors"
+          className="text-white hover:text-primary underline underline-offset-2 transition-colors"
         >
           Escríbenos a {SUPPORT_EMAIL}
         </a>

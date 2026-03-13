@@ -17,6 +17,7 @@ export default function NuevaContrasenaPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -68,7 +69,7 @@ export default function NuevaContrasenaPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <Label htmlFor="password" className="text-sm font-medium text-foreground">
+          <Label htmlFor="password" className="text-sm font-medium text-white">
             Nueva contraseña
           </Label>
           <div className="relative mt-1.5">
@@ -78,39 +79,53 @@ export default function NuevaContrasenaPage() {
               placeholder="Minimo 8 caracteres"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-10 pr-10 border-border focus-visible:ring-accent/40"
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"  
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showPassword ? "Ocultar" : "Mostrar"}
             >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
             </button>
           </div>
-          <p className="mt-1.5 text-xs text-muted-foreground">
+          <p className="mt-1.5 text-xs text-white">
             Minimo 8 caracteres, una mayuscula y un numero
           </p>
         </div>
 
         <div>
-          <Label htmlFor="confirm" className="text-sm font-medium text-foreground">
+          <Label htmlFor="confirm" className="heading-style-h3 uppercase font-medium text-white">
             Confirmar contraseña
           </Label>
-          <Input
-            id="confirm"
-            type="password"
-            placeholder="Repite tu contraseña"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
-          />
+          <div className="relative mt-1.5">
+            <Input
+              id="confirm"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Repite tu contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showConfirmPassword ? "Ocultar" : "Mostrar"}
+            >
+              {showConfirmPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
+            </button>
+          </div>
+          <p className="mt-1.5 text-xs text-white">
+            Minimo 8 caracteres, una mayuscula y un numero
+          </p>
         </div>
 
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-10 bg-foreground text-background hover:bg-foreground/90 font-medium"
+          className="w-full h-10 bg-primary text-white hover:bg-primary/90 font-medium"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -119,14 +134,14 @@ export default function NuevaContrasenaPage() {
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
+              <Lock className="h-4 w-4 text-white" />
               Guardar nueva contraseña
             </span>
           )}
         </Button>
 
         {errorMessage && (
-          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/20 px-3 py-2.5 text-sm text-white">
             <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
             <span>{errorMessage}</span>
           </div>

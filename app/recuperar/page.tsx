@@ -47,9 +47,9 @@ export default function RecuperarPage() {
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 mb-5">
             <Mail className="h-6 w-6 text-accent" />
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+          <p className="text-sm text-white leading-relaxed max-w-xs">
             Si existe una cuenta con{" "}
-            <span className="font-medium text-foreground">{email}</span>, recibiras
+            <span className="font-medium text-white">{email}</span>, recibiras
             un enlace para crear una nueva contrasena.
           </p>
         </div>
@@ -57,9 +57,9 @@ export default function RecuperarPage() {
         <Link href="/login">
           <Button
             variant="outline"
-            className="w-full h-10 mt-4 border-border hover:bg-muted"
+            className="w-full h-10 mt-4 border-border hover:bg-muted text-white"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-4 w-4 mr-2 text-white" />
             Volver al login
           </Button>
         </Link>
@@ -74,7 +74,7 @@ export default function RecuperarPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <Label htmlFor="email" className="text-sm font-medium text-foreground">
+          <Label htmlFor="email" className="heading-style-h3 uppercase font-medium text-white">
             Email
           </Label>
           <Input
@@ -83,7 +83,7 @@ export default function RecuperarPage() {
             placeholder="tu@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"
             autoComplete="email"
           />
         </div>
@@ -91,7 +91,7 @@ export default function RecuperarPage() {
         <Button
           type="submit"
           disabled={loading || !email}
-          className="w-full h-10 bg-foreground text-background hover:bg-foreground/90 font-medium"
+          className="w-full h-10 bg-primary text-white hover:bg-primary/90 font-medium"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -101,25 +101,25 @@ export default function RecuperarPage() {
           ) : (
             <span className="flex items-center gap-2">
               Enviar enlace
-              <Send className="h-4 w-4" />
+              <Send className="h-4 w-4 text-white" />
             </span>
           )}
         </Button>
 
         {errorMessage && (
-          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/20 px-3 py-2.5 text-sm text-white">
             <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
       </form>
 
-      <p className="mt-8 text-center text-sm text-muted-foreground">
+      <p className="mt-8 text-center text-size-small text-white">
         <Link
           href="/login"
-          className="text-foreground font-medium hover:text-accent transition-colors inline-flex items-center gap-1.5"
+          className="text-white font-medium hover:text-primary transition-colors inline-flex items-center gap-1.5"
         >
-          <ArrowLeft className="h-3.5 w-3.5" />
+          <ArrowLeft className="h-3.5 w-3.5 text-white" />
           Volver al login
         </Link>
       </p>

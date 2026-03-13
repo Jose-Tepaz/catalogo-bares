@@ -67,66 +67,66 @@ function SidebarContent() {
 
   return (
     <div
-      className="flex flex-col h-full text-sidebar-foreground relative"
-      style={{ backgroundColor: "#E84922" }}
+      className="flex flex-col h-full text-sidebar-foreground relative bg-primary "
+      
     >
       {/* SVG background con opacidad reducida */}
-      <div
-        className="absolute inset-0 pointer-events-none"
+      <div 
+        className="absolute inset-0 pointer-events-none bg-primary 
+          top-0 left-0 z-0 opacity-20"
         style={{
-          backgroundImage: "url('/sidebar-bg.svg')",
+          backgroundImage: "url('/textura.svg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          opacity: 0.15,
         }}
       />
-      {/* Brand */}
-      <div className="px-5 pt-6 pb-2">
+      {/* Brand */} 
+      <div className="px-5 pt-6 pb-2 z-10">
         <div className="flex items-center mb-6">
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt="La Ruta Coctelera"
-            width={160}
+            width={260}
             height={48}
-            className="w-auto h-10 object-contain"
+            className="w-auto h-20 object-contain"
             priority
           />
         </div>
       </div>
 
       {/* User profile */}
-      <div className="px-5 pb-5">
+      <div className="px-5 pb-5 z-10">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full border border-sidebar-border" style={{ backgroundColor: '#003D6A' }}>
             <User className="h-4 w-4 text-sidebar-foreground" />
           </div>
           <div className="min-w-0">
-            <h2 className="text-sm font-semibold text-sidebar-foreground">
+            <h2 className="heading-style-h3 uppercase font-medium text-white">
               {userLabel}
             </h2>
-            <span className="text-xs text-sidebar-foreground" style={{ fontFamily: 'Work Sans, sans-serif' }}>
+            <span className="text-size-small text-white" style={{ fontFamily: 'Work Sans, sans-serif' }}>
               {userEmail || "—"}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="mx-5 h-px bg-sidebar-border" />
+      <div className="mx-5 h-px bg-sidebar-border z-10" />
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4">
+      <nav className="flex-1 px-3 py-4 z-10">
         <ul className="space-y-0.5">
           <li>
             <Link
               href="/"
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 pathname === "/"
-                  ? "text-medium font-medium text-sidebar-foreground bg-sidebar-accent"
-                  : "text-medium font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "heading-style-h3 uppercase font-medium text-white bg-primary"
+                  : "heading-style-h3 uppercase font-medium text-white hover:bg-primary hover:text-white"
               }`}
             >
-              <Compass className={`h-4 w-4 ${pathname === "/" ? "text-sidebar-primary" : ""}`} />
+              <Compass className={`h-4 w-4 ${pathname === "/" ? "text-white  " : ""}`} />
               Explorar
             </Link>
           </li>
@@ -135,11 +135,11 @@ function SidebarContent() {
               href="/participaciones"
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 pathname === "/participaciones"
-                  ? "text-medium font-medium text-sidebar-foreground bg-sidebar-accent"
-                  : "text-medium font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "heading-style-h3 uppercase font-medium text-white bg-primary"
+                  : "heading-style-h3 uppercase font-medium text-white hover:bg-primary hover:text-white"
               }`}
             >
-              <Trophy className={`h-4 w-4 ${pathname === "/participaciones" ? "text-sidebar-primary" : ""}`} />
+              <Trophy className={`h-4 w-4 ${pathname === "/participaciones" ? "text-white" : ""}`} />
               Participaciones
               <span className="ml-auto font-mono text-[10px] rounded-full px-1.5 py-0.5 font-bold text-white" style={{ backgroundColor: '#003D6A' }}>
                 {completedCount}
@@ -151,8 +151,8 @@ function SidebarContent() {
               href="/settings"
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 pathname === "/settings"
-                  ? "text-medium font-medium text-sidebar-foreground bg-sidebar-accent"
-                  : "text-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  ? "heading-style-h3 uppercase font-medium text-white bg-primary"
+                  : "heading-style-h3 uppercase font-medium text-white hover:bg-primary hover:text-white"
               }`}
             >
               <Settings className={`h-4 w-4 ${pathname === "/settings" ? "text-sidebar-primary" : ""}`} />
@@ -163,13 +163,13 @@ function SidebarContent() {
       </nav>
 
       {/* Footer */}
-      <div className="px-5 py-4 border-t border-sidebar-border">
+      <div className="px-5 py-4 border-t border-sidebar-border z-10 flex items-center justify-center">
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex w-full items-center gap-2 text-white hover:text-sidebar-foreground transition-colors text-medium"
+          className="flex w-full items-center gap-2 text-white hover:text-white transition-colors heading-style-h3 uppercase font-medium text-white"
         >
-          <LogOut className="h-3.5 w-3.5" />
+          <LogOut className="size-7 text-white hover:text-white/80 hover:bg-white/10 rounded-full mb-2" />
           Cerrar sesión
         </button>
       </div>

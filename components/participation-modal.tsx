@@ -4,11 +4,9 @@ import { useState, useRef, type FormEvent, useEffect } from "react"
 import type { Bar, Participation } from "@/lib/types"
 import { useParticipations } from "@/lib/use-participations"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Camera, Upload, X, CheckCircle2, ImageIcon, Pencil } from "lucide-react"
+import { Upload, X, CheckCircle2, ImageIcon, Pencil } from "lucide-react"
 import { toast } from "sonner"
-import Image from "next/image"
 
 interface ParticipationModalProps {
   bar: Bar
@@ -17,12 +15,11 @@ interface ParticipationModalProps {
 }
 
 export function ParticipationModal({ bar, open, onOpenChange }: ParticipationModalProps) {
-  const { getParticipation, saveParticipation, fetchParticipationPhoto, loading } = useParticipations()
+  const { getParticipation, saveParticipation, fetchParticipationPhoto } = useParticipations()
   const existing = getParticipation(bar.id)
 
   const [isEditing, setIsEditing] = useState(false)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
-  const [title, setTitle] = useState("")
   const [story, setStory] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -39,19 +36,16 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
   useEffect(() => {
     if (existing && !isEditing) {
       setPhotoPreview(existing.photoDataUrl || null)
-      setTitle(existing.title ?? "")
       setStory(existing.story ?? "")
       setErrors({})
     }
     if (!existing && !isEditing) {
       setPhotoPreview(null)
-      setTitle("")
       setStory("")
       setErrors({})
     }
   }, [existing, isEditing])
 
-  // Reset editing state when modal closes
   useEffect(() => {
     if (!open) setIsEditing(false)
   }, [open])
@@ -79,8 +73,7 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
     e.preventDefault()
     const newErrors: Record<string, string> = {}
     if (!photoPreview) newErrors.photo = "La foto es obligatoria"
-    if (!title.trim()) newErrors.title = "El titulo es obligatorio"
-    if (!story.trim()) newErrors.story = "La historia es obligatoria"
+    if (!story.trim()) newErrors.story = "La descripcion es obligatoria"
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
@@ -88,7 +81,6 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
     const participation: Participation = {
       barId: bar.id,
       photoDataUrl: photoPreview!,
-      title: title.trim(),
       story: story.trim(),
       createdAt: existing?.createdAt ?? new Date().toISOString(),
     }
@@ -104,31 +96,19 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="p-0 border-0 overflow-hidden max-w-md w-full"
-        style={{ backgroundColor: "#E84922" }}
+        className="p-0 border-0 overflow-hidden bg-primary"
+        style={{ maxWidth: "400px" }}
       >
-        {/* SVG background con opacidad reducida */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            backgroundImage: "url('/sidebar-bg.svg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.15,
-          }}
-        />
-
         <DialogTitle className="sr-only">
           {existing ? "Editar participacion" : "Registrar participacion"}
         </DialogTitle>
 
         <div className="relative z-10 px-6 pt-6 pb-2">
-          <p className="text-white/80 text-xs font-medium uppercase tracking-widest mb-1">
+          <p className="text-size-small text-white uppercase tracking-widest mb-1">
             {bar.city}
           </p>
           <h2
-            className="text-2xl font-bold text-white leading-tight"
+            className="heading-style-h2 uppercase font-medium text-white leading-tight"
             style={{ fontFamily: "var(--font-heading), sans-serif" }}
           >
             {bar.name}
@@ -140,20 +120,19 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
           {!showForm && existing ? (
             <div className="space-y-4 pt-2">
               {existing.photoDataUrl && (
-                <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                <div className="relative aspect-video h-[400px] w-full overflow-hidden rounded-xl">
                   <img
                     src={existing.photoDataUrl}
-                    alt={existing.title}
+                    alt="Foto de participacion"
                     className="h-full w-full object-cover"
                   />
                 </div>
               )}
               <div>
-                <h3 className="text-white font-bold text-lg">{existing.title}</h3>
-                <p className="text-white/80 text-sm mt-1 leading-relaxed whitespace-pre-wrap">
+                <p className="text-size-large text-white leading-relaxed whitespace-pre-wrap">
                   {existing.story}
                 </p>
-                <p className="text-white/60 text-xs mt-3">
+                <p className="text-size-small text-white/80 mt-3">
                   Registrado el{" "}
                   {new Date(existing.createdAt).toLocaleDateString("es-MX", {
                     year: "numeric",
@@ -164,7 +143,8 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
               </div>
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 text-white text-sm font-semibold rounded-lg px-4 py-2 w-full justify-center transition-opacity hover:opacity-90"
+
+                className="flex items-center gap-2 py-3 rounded-full text-white text-sm font-semibold px-4 py-2 w-full justify-center transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#003D6A' }}
               >
                 <Pencil className="h-3.5 w-3.5" />
@@ -176,7 +156,7 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
             <form onSubmit={handleSubmit} className="space-y-4 pt-2">
               {/* Foto */}
               <div>
-                <label className="block text-white/90 text-sm font-medium mb-2">
+                <label className="heading-style-h3 uppercase font-medium text-white/90 mb-2">
                   Foto del coctel
                 </label>
                 <input
@@ -235,29 +215,9 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
                 )}
               </div>
 
-              {/* Titulo */}
+              {/* Descripcion */}
               <div>
-                <label htmlFor="modal-title" className="block text-white/90 text-sm font-medium mb-2">
-                  Titulo de tu participacion
-                </label>
-                <Input
-                  id="modal-title"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value)
-                    setErrors((prev) => ({ ...prev, title: "" }))
-                  }}
-                  placeholder="Ej: El mejor Negroni de mi vida"
-                  className={inputClass}
-                />
-                {errors.title && (
-                  <p className="mt-1 text-xs text-white font-medium">{errors.title}</p>
-                )}
-              </div>
-
-              {/* Historia */}
-              <div>
-                <label htmlFor="modal-story" className="block text-white/90 text-sm font-medium mb-2">
+                <label htmlFor="modal-story" className="heading-style-h3 uppercase font-medium text-white/90 mb-2">
                   Historia o anecdota
                 </label>
                 <Textarea
@@ -269,10 +229,10 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
                   }}
                   placeholder="Cuenta tu experiencia en este bar..."
                   rows={4}
-                  className={`resize-none ${inputClass}`}
+                  className={`text-size-large text-white placeholder:text-white/80 focus-visible:ring-white/50 focus-visible:border-white/60`}
                 />
                 {errors.story && (
-                  <p className="mt-1 text-xs text-white font-medium">{errors.story}</p>
+                  <p className="mt-1 text-size-medium text-white font-medium">{errors.story}</p>
                 )}
               </div>
 
@@ -280,7 +240,7 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
               <div className="flex gap-3 pt-1">
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 text-white font-semibold text-sm rounded-lg px-4 py-2.5 transition-opacity hover:opacity-90"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full text-white font-semibold text-sm px-4 py-2.5 transition-opacity hover:opacity-90"
                   style={{ backgroundColor: '#003D6A' }}
                 >
                   <CheckCircle2 className="h-4 w-4" />
@@ -292,7 +252,6 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
                     onClick={() => {
                       setIsEditing(false)
                       setPhotoPreview(existing?.photoDataUrl || null)
-                      setTitle(existing?.title ?? "")
                       setStory(existing?.story ?? "")
                       setErrors({})
                     }}

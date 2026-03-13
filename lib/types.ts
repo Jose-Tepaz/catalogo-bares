@@ -29,7 +29,7 @@ export interface Estado {
 export interface Participation {
   barId: string
   photoDataUrl: string
-  title: string
+  title?: string
   story: string
   createdAt: string
 }

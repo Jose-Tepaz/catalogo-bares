@@ -5,44 +5,45 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.99 0.002 85);
-  --foreground: oklch(0.13 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.13 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0 0);
-  --primary: oklch(0.13 0 0);
-  --primary-foreground: oklch(0.99 0.002 85);
-  --secondary: oklch(0.96 0.006 85);
-  --secondary-foreground: oklch(0.13 0 0);
-  --muted: oklch(0.95 0.005 85);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.57 0.21 32);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.90 0.005 85);
-  --input: oklch(0.90 0.005 85);
-  --ring: oklch(0.57 0.21 32);
-  --chart-1: oklch(0.75 0.11 90);
-  --chart-2: oklch(0.08 0 0);
-  --chart-3: oklch(0.55 0.04 90);
-  --chart-4: oklch(0.65 0.07 90);
-  --chart-5: oklch(0.35 0 0);
+  --primary-color: #fa4616;
+  --background: #fdfcfb;
+  --foreground: #003D6A;
+  --card: #ffffff;
+  --card-foreground: #222222;
+  --popover: #ffffff;
+  --popover-foreground: #222222;
+  --primary: #fa4616;
+  --primary-foreground: #fdfcfb;
+  --secondary: #f4f0e8;
+  --secondary-foreground: #222222;
+  --muted: #f3f2ee;
+  --muted-foreground: #6e6e6e;
+  --accent: #b87e2c;
+  --accent-foreground: #ffffff;
+  --destructive: #bf592c;
+  --destructive-foreground: #ffffff;
+  --border: #e5e0d2;
+  --input: #e5e0d2;
+  --ring: #b87e2c;
+  --chart-1: #e4c876;
+  --chart-2: #161616;
+  --chart-3: #bcac92;
+  --chart-4: #d8c19a;
+  --chart-5: #5a5a5a;
   --radius: 0.5rem;
   --blue: #003D6A;
-  --sidebar: oklch(0.57 0.21 32);
-  --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: oklch(1 0 0);
-  --sidebar-primary-foreground: oklch(0.57 0.21 32);
-  --sidebar-accent: oklch(1 0 0 / 0.15);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(1 0 0 / 0.20);
-  --sidebar-ring: oklch(0.57 0.21 32);
-  --success: oklch(0.60 0.15 150);
-  --success-foreground: oklch(1 0 0);
-  --warning: oklch(0.75 0.11 90);
-  --warning-foreground: oklch(0.08 0 0);
+  --sidebar: #b87e2c;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #b87e2c;
+  --sidebar-accent: #ffffff26;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #ffffff33;
+  --sidebar-ring: #b87e2c;
+  --success: #7eca4d;
+  --success-foreground: #ffffff;
+  --warning: #e4c876;
+  --warning-foreground: #161616;
 }
 
 .dark {
@@ -147,4 +148,91 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
+
+  .heading-style-h1 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .heading-style-h2 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .heading-style-h3 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .heading-style-h4 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .heading-style-h5 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .heading-style-h6 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .text-size-large {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: var(--font-body), sans-serif;
+  } 
+
+  .text-size-medium {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: var(--font-body), sans-serif;
+  }
+
+  .text-size-small {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: var(--font-body), sans-serif;
+  }
+
+  .text-size-tiny {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: var(--font-body), sans-serif;
+  }
 }
+
+

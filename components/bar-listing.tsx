@@ -1,12 +1,14 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { CATEGORIES } from "@/lib/bars-data"
 import type { Bar, BarCategory, Estado } from "@/lib/types"
 import { useParticipations } from "@/lib/use-participations"
+import { createClient } from "@/lib/supabase/client"
 import { BarCard } from "@/components/bar-card"
 import { UserSidebar } from "@/components/user-sidebar"
 import { MobileSidebar } from "@/components/mobile-sidebar"
+import { WelcomeModal } from "@/components/welcome-modal"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -33,8 +35,23 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
   )
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("todos")
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [userName, setUserName] = useState("")
 
   const { isCompleted, loading } = useParticipations()
+  const supabase = useMemo(() => createClient(), [])
+
+  useEffect(() => {
+    let mounted = true
+    async function loadUser() {
+      const { data: { session } } = await supabase.auth.getSession()
+      const u = session?.user ?? null
+      if (!mounted) return
+      const name = (u?.user_metadata?.name as string | undefined) ?? ""
+      setUserName(name || (u?.email ? u.email.split("@")[0] : ""))
+    }
+    loadUser()
+    return () => { mounted = false }
+  }, [supabase])
 
   const barCountByState = useMemo(() => {
     const counts: Record<string, number> = {}
@@ -66,31 +83,30 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeModal userName={userName} />
       <UserSidebar />
       <MobileSidebar open={mobileOpen} onOpenChange={setMobileOpen} />
 
       <div className="lg:pl-64">
         {/* Header */}
-        <header className="sticky top-0 z-30 bg-background border-b border-border">
+        <header className=" top-0 z-30 bg-background border-b border-border bg-foreground">
           <div className="px-6 py-5">
             {/* Top row: hamburger + title */}
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-start gap-3 mb-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileOpen(true)}
-                className="shrink-0 lg:hidden -ml-2"
+                className="shrink-0 lg:hidden -ml-2 text-white"
                 aria-label="Abrir menu"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="size-7 text-white" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-foreground tracking-tight" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
-                  La Ruta <span className="text-accent">Cointreau</span>
+                <h1 className="heading-style-h2 uppercase font-medium text-foreground tracking-tight text-white">
+                  Hola{userName ? `, ${userName}` : ""} | Comienz tu recorrido
                 </h1>
-                <p className="text-[11px] text-muted-foreground tracking-wide">
-                  Los mejores bares de Mexico
-                </p>
+                
               </div>
             </div>
 
@@ -100,10 +116,10 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 onClick={() => setStateId("todos")}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
                   stateId === "todos"
-                    ? "text-white border-transparent shadow-sm"
+                    ? "text-white border-transparent shadow-sm bg-primary"
                     : "bg-background text-foreground border-border hover:border-foreground/40 hover:shadow-sm"
                 }`}
-                style={stateId === "todos" ? { backgroundColor: '#003D6A' } : {}}
+              
               >
                 Todos
                 <span className={`font-mono text-[10px] rounded-full px-1.5 py-0.5 ${stateId === "todos" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"}`}>
@@ -116,10 +132,10 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                   onClick={() => setStateId(estado.id)}
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     stateId === estado.id
-                      ? "text-white border-transparent shadow-sm"
-                      : "bg-background text-foreground border-border hover:border-foreground/40 hover:shadow-sm"
+                      ? "text-white shadow-sm bg-primary"
+                      : "bg-background text-foreground  hover:shadow-sm"
                   }`}
-                  style={stateId === estado.id ? { backgroundColor: '#003D6A' } : {}}
+                  style={stateId === estado.id ? { backgroundColor: 'var(--primary)' } : {}}
                 >
                   {estado.name}
                   {barCountByState[estado.id] !== undefined && (

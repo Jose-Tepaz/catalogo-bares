@@ -79,32 +79,32 @@ export default function ParticipacionesPage() {
 
       <div className="lg:pl-64">
         {/* Header */}
-        <header className="sticky top-0 z-30 bg-background border-b border-border">
+        <header className="top-0 z-30 bg-background border-b border-border bg-foreground">
           <div className="px-6 py-5">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileOpen(true)}
-                className="shrink-0 lg:hidden -ml-2"
+                className="shrink-0 lg:hidden -ml-2 text-white"
                 aria-label="Abrir menu"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="size-7 text-white" />
               </Button>
               <Link href="/">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="-ml-2 hidden lg:inline-flex"
+                  className="-ml-2 hidden lg:inline-flex text-white hover:text-white/80 hover:bg-white/10 rounded-full p-1"
                 >
-                  <ArrowLeft className="h-4 w-4" />
+                  <ArrowLeft className="size-7 text-white hover:text-white/80 hover:bg-white/10 rounded-full p-1" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-lg font-bold text-foreground tracking-tight">
-                  Mis <span className="text-accent">Participaciones</span>
+                <h1 className=" heading-style-h2 uppercase font-bold text-foreground tracking-tight text-white">
+                  Mis Participaciones
                 </h1>
-                <p className="text-[11px] text-muted-foreground tracking-wide">
+                <p className="text-size-small text-white/80 tracking-wide">
                   {participatedBars.length} completadas &middot; {pendingCount}{" "}
                   pendientes
                 </p>
@@ -179,12 +179,12 @@ export default function ParticipacionesPage() {
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
                           <h3
-                            className="text-base font-bold text-foreground truncate"
+                            className="heading-style-h3 uppercase font-medium text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2"
                             style={{ fontFamily: 'var(--font-heading), sans-serif' }}
                           >
                             {bar.name}
                           </h3>
-                          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
+                          <p className="text-size-small text-foreground mt-0.5 flex items-center gap-1.5">
                             <span>{bar.city}</span>
                             <span
                               className="inline-block h-2.5 w-px bg-accent/50"
@@ -204,7 +204,7 @@ export default function ParticipacionesPage() {
                         </button>
                       </div>
 
-                      <p className="text-xs text-muted-foreground/80 mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-size-small text-foreground/80 mt-2 line-clamp-2 leading-relaxed">
                         {participation.story}
                       </p>
 

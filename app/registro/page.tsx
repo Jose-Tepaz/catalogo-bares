@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { AuthLayout } from "@/components/auth-layout"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Eye, EyeOff, ArrowRight, ShieldAlert, AlertCircle } from "lucide-react"
+import { Eye, EyeOff, ArrowRight, ShieldAlert, AlertCircle, Calendar } from "lucide-react"
 
 function GoogleIcon() {
   return (
@@ -100,6 +100,7 @@ export default function RegistroPage() {
   const [socialLoading, setSocialLoading] = useState<"google" | "facebook" | "apple" | null>(null)
   const [modalOpen, setModalOpen] = useState<"terminos" | "privacidad" | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const birthdateRef = useRef<HTMLInputElement>(null)
 
   async function handleSocialLogin(provider: "google" | "facebook" | "apple") {
     setSocialLoading(provider)
@@ -213,9 +214,9 @@ export default function RegistroPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 text-white">
         <div>
-          <Label htmlFor="name" className="text-sm font-medium" style={{ color: '#003D6A' }}>
+          <Label htmlFor="name" className="heading-style-h3 uppercase font-medium text-white">
             Nombre
           </Label>
           <Input
@@ -224,13 +225,13 @@ export default function RegistroPage() {
             placeholder="Tu nombre"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"
             autoComplete="name"
           />
         </div>
 
         <div>
-          <Label htmlFor="email" className="text-sm font-medium" style={{ color: '#003D6A' }}>
+          <Label htmlFor="email" className="heading-style-h3 uppercase font-medium text-white">
             Email
           </Label>
           <Input
@@ -239,27 +240,37 @@ export default function RegistroPage() {
             placeholder="tu@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
+            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"
             autoComplete="email"
           />
         </div>
 
         <div>
-          <Label htmlFor="birthdate" className="text-sm font-medium" style={{ color: '#003D6A' }}>
+          <Label htmlFor="birthdate" className="heading-style-h3 uppercase font-medium text-white">
             Fecha de nacimiento
           </Label>
-          <Input
-            id="birthdate"
-            type="date"
-            value={birthdate}
-            onChange={(e) => setBirthdate(e.target.value)}
-            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split("T")[0]}
-            className="mt-1.5 h-10 border-border focus-visible:ring-accent/40"
-          />
+          <div className="relative mt-1.5">
+            <Input
+              ref={birthdateRef}
+              id="birthdate"
+              type="date"
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split("T")[0]}
+              className="h-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80 pr-10"
+            />
+            <Calendar
+              className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white cursor-pointer"
+              onClick={() => birthdateRef.current?.showPicker()}
+            />
+          </div>
+          <p className="mt-1.5 text-xs text-white">
+            Debes ser mayor de 18 años para registrarte
+          </p>
         </div>
 
         <div>
-          <Label htmlFor="password" className="text-sm font-medium" style={{ color: '#003D6A' }}>
+          <Label htmlFor="password" className="heading-style-h3 uppercase font-medium text-white">
             Contraseña
           </Label>
           <div className="relative mt-1.5">
@@ -269,7 +280,7 @@ export default function RegistroPage() {
               placeholder="Mínimo 8 caracteres"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-10 pr-10 border-border focus-visible:ring-accent/40"
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80  "
               autoComplete="new-password"
             />
             <button
@@ -278,16 +289,16 @@ export default function RegistroPage() {
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label={showPassword ? "Ocultar" : "Mostrar"}
             >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
             </button>
           </div>
-          <p className="mt-1.5 text-xs text-muted-foreground">
+          <p className="mt-1.5 text-xs text-white">
             Minimo 8 caracteres, una mayuscula y un numero
           </p>
         </div>
 
         <div>
-          <Label htmlFor="confirm" className="text-sm font-medium" style={{ color: '#003D6A' }}>
+            <Label htmlFor="confirm" className="heading-style-h3 uppercase font-medium text-white">
             Confirmar contraseña
           </Label>
           <div className="relative mt-1.5">
@@ -297,7 +308,7 @@ export default function RegistroPage() {
               placeholder="Repite tu contraseña"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="h-10 pr-10 border-border focus-visible:ring-accent/40"
+              className="h-10 pr-10 border-border focus-visible:ring-accent/40 text-white placeholder:text-white/80"
               autoComplete="new-password"
             />
             <button
@@ -306,9 +317,12 @@ export default function RegistroPage() {
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label={showConfirmPassword ? "Ocultar" : "Mostrar"}
             >
-              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showConfirmPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
             </button>
           </div>
+          <p className="mt-1.5 text-xs text-white">
+            Minimo 8 caracteres, una mayuscula y un numero
+          </p>
         </div>
 
         {/* Términos y condiciones */}
@@ -320,12 +334,12 @@ export default function RegistroPage() {
             onChange={(e) => setAcceptTerms(e.target.checked)}
             className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-foreground"
           />
-          <label htmlFor="terms" className="text-xs text-foreground leading-relaxed cursor-pointer">
+          <label htmlFor="terms" className="text-xs text-white leading-relaxed cursor-pointer">
             He leído y acepto los{" "}
             <button
               type="button"
               onClick={() => setModalOpen("terminos")}
-              className="underline underline-offset-2 hover:text-accent transition-colors"
+              className="underline underline-offset-2 hover:text-primary transition-colors"
             >
               términos y condiciones
             </button>
@@ -333,7 +347,7 @@ export default function RegistroPage() {
             <button
               type="button"
               onClick={() => setModalOpen("privacidad")}
-              className="border-b border-foreground underline underline-offset-2 hover:text-accent transition-colors"
+              className="text-white underline underline-offset-2 hover:text-primary transition-colors"
             >
               política de privacidad
             </button>
@@ -343,8 +357,7 @@ export default function RegistroPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-10 font-medium text-white hover:opacity-90"
-          style={{ backgroundColor: '#003D6A' }}
+          className="w-full h-10 font-medium text-white bg-primary hover:bg-primary/90"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -354,13 +367,13 @@ export default function RegistroPage() {
           ) : (
             <span className="flex items-center gap-2">
               Crear cuenta
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 text-white" />
             </span>
           )}
         </Button>
 
         {errorMessage && (
-          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/20 px-3 py-2.5 text-sm text-white">
             <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
             <span>{errorMessage}</span>
           </div>
@@ -373,7 +386,7 @@ export default function RegistroPage() {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-3 text-xs text-muted-foreground">
+          <span className="bg-background px-3 text-size-small text-muted-foreground">
             o continuar con
           </span>
         </div>
@@ -425,11 +438,11 @@ export default function RegistroPage() {
         */}
       </div>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-size-small text-white">
         {"¿Ya tienes cuenta? "}
         <Link
           href="/login"
-          className="text-foreground font-medium hover:text-accent transition-colors"
+          className="text-white font-medium hover:text-primary transition-colors underline underline-offset-2"
         >
           Iniciar sesión
         </Link>
