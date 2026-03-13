@@ -18,12 +18,21 @@ export interface Bar {
   category: BarCategory
   imageUrl: string | null
   state_id: string | null
+  city_id: string | null
+  google_maps_url: string | null
 }
 
 export interface Estado {
   id: string
   name: string
   slug: string
+}
+
+export interface Ciudad {
+  id: string
+  name: string
+  slug: string
+  state_id: string | null
 }
 
 export interface Participation {

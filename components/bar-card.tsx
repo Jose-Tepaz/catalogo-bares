@@ -2,7 +2,7 @@
 
 import type { Bar } from "@/lib/types"
 import { useParticipations } from "@/lib/use-participations"
-import { Wine, ArrowRight, Pencil } from "lucide-react"
+import { Wine, ArrowRight, Pencil, MapPin } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
@@ -19,7 +19,7 @@ export function BarCard({ bar }: BarCardProps) {
 
   return (
     <>
-      <div className="group block cursor-pointer">
+      <div className="group block cursor-pointer border border-border/60 rounded-xl p-2">
         {/* Image */}
         <div className="relative aspect-square overflow-hidden rounded-sm bg-muted border border-border/60 rounded-xl">
           {completed ? (
@@ -96,10 +96,11 @@ export function BarCard({ bar }: BarCardProps) {
             <h3 className="heading-style-h3 uppercase font-medium text-foreground leading-tight group-hover:underline decoration-accent underline-offset-2" style={{ fontFamily: 'var(--font-heading), sans-serif' }}>
               {bar.name}
             </h3>
-            <p className="mt-1 flex items-center gap-1.5 text-size-small text-muted-foreground">
-              <span>{bar.city}</span>
-              <span className="inline-block h-3 w-px bg-accent/50" aria-hidden="true" />
-              <span>{bar.category}</span>
+            <p className="mt-1 flex flex-col items-start gap-1.5 text-size-small text-muted-foreground">
+              <span className="text-size-small text-foreground">{bar.city}</span>
+          
+           
+              <span className="flex items-start gap-1.5"> <MapPin className="size-5 min-w-5" /> {bar.address}</span>
             </p>
           </div>
         </div>

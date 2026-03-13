@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef, useCallback } from "react"
 import { CATEGORIES } from "@/lib/bars-data"
-import type { Bar, BarCategory, Estado } from "@/lib/types"
+import type { Bar, BarCategory, Estado, Ciudad } from "@/lib/types"
 import { useParticipations } from "@/lib/use-participations"
 import { createClient } from "@/lib/supabase/client"
 import { BarCard } from "@/components/bar-card"
@@ -20,15 +20,19 @@ import {
 import { Search, X, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+const PAGE_SIZE = 12
+
 type StatusFilter = "todos" | "pendiente" | "completado"
 
 interface BarListingProps {
   initialBars: Bar[]
   estados: Estado[]
+  ciudades: Ciudad[]
 }
 
-export function BarListing({ initialBars, estados }: BarListingProps) {
+export function BarListing({ initialBars, estados, ciudades }: BarListingProps) {
   const [stateId, setStateId] = useState<string>("todos")
+  const [cityFilter, setCityFilter] = useState<string>("todas")
   const [search, setSearch] = useState("")
   const [categoryFilter, setCategoryFilter] = useState<BarCategory | "todas">(
     "todas"
@@ -36,6 +40,8 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("todos")
   const [mobileOpen, setMobileOpen] = useState(false)
   const [userName, setUserName] = useState("")
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const sentinelRef = useRef<HTMLDivElement>(null)
 
   const { isCompleted, loading } = useParticipations()
   const supabase = useMemo(() => createClient(), [])
@@ -65,6 +71,7 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
   const filteredBars = useMemo(() => {
     return initialBars.filter((bar) => {
       if (stateId !== "todos" && bar.state_id !== stateId) return false
+      if (cityFilter !== "todas" && bar.city_id !== cityFilter) return false
       if (search) {
         const q = search.toLowerCase()
         if (
@@ -79,7 +86,41 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
       if (statusFilter === "pendiente" && isCompleted(bar.id)) return false
       return true
     })
-  }, [stateId, search, categoryFilter, statusFilter, isCompleted, initialBars])
+  }, [stateId, cityFilter, search, categoryFilter, statusFilter, isCompleted, initialBars])
+
+  // Resetear ciudad al cambiar estado
+  useEffect(() => {
+    setCityFilter("todas")
+  }, [stateId])
+
+  // Resetear al cambiar filtros
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE)
+  }, [stateId, cityFilter, search, categoryFilter, statusFilter])
+
+  const displayedBars = useMemo(
+    () => filteredBars.slice(0, visibleCount),
+    [filteredBars, visibleCount]
+  )
+
+  const hasMore = visibleCount < filteredBars.length
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, filteredBars.length))
+  }, [filteredBars.length])
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore()
+      },
+      { rootMargin: "200px" }
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [loadMore])
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,42 +151,9 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
               </div>
             </div>
 
-            {/* Estado pills */}
             <div className="flex items-center gap-2 mb-4 overflow-x-auto no-scrollbar whitespace-nowrap">
-              <button
-                onClick={() => setStateId("todos")}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
-                  stateId === "todos"
-                    ? "text-white border-transparent shadow-sm bg-primary"
-                    : "bg-background text-foreground border-border hover:border-foreground/40 hover:shadow-sm"
-                }`}
-              
-              >
-                Todos
-                <span className={`font-mono text-[10px] rounded-full px-1.5 py-0.5 ${stateId === "todos" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"}`}>
-                  {initialBars.length}
-                </span>
-              </button>
-              {estados.map((estado) => (
-                <button
-                  key={estado.id}
-                  onClick={() => setStateId(estado.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
-                    stateId === estado.id
-                      ? "text-white shadow-sm bg-primary"
-                      : "bg-background text-foreground  hover:shadow-sm"
-                  }`}
-                  style={stateId === estado.id ? { backgroundColor: 'var(--primary)' } : {}}
-                >
-                  {estado.name}
-                  {barCountByState[estado.id] !== undefined && (
-                    <span className={`font-mono text-[10px] rounded-full px-1.5 py-0.5 ${stateId === estado.id ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"}`}>
-                      {barCountByState[estado.id]}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
+               {/* Estado pills */}
+           
 
             {/* Filters row */}
             <div className="flex flex-nowrap items-center gap-3">
@@ -168,7 +176,69 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 )}
               </div>
 
+              <Select
+                value={stateId}
+                onValueChange={(v) => setStateId(v)}
+              >
+                <SelectTrigger className="w-[180px] h-9 text-size-small border-border bg-background focus:ring-primary/40">
+                  <SelectValue placeholder="Estado" className="text-size-small color-primary" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem
+                    value="todos"
+                    className="text-size-small color-primary hover:bg-primary/10 hover:text-foreground transition-colors flex items-center justify-between"
+                  >
+                    <span>Todos los estados</span>
+                    <span className="font-mono text-[10px] rounded-full px-1.5 py-0.5 bg-muted text-muted-foreground ml-2">
+                      {initialBars.length}
+                    </span>
+                  </SelectItem>
+                  {estados.map((estado) => (
+                    <SelectItem
+                      key={estado.id}
+                      value={estado.id}
+                      className="text-size-small color-primary hover:bg-primary/10 hover:text-foreground transition-colors flex items-center justify-between"
+                    >
+                      <span>{estado.name}</span>
+                      {barCountByState[estado.id] !== undefined && (
+                        <span className="font-mono text-[10px] rounded-full px-1.5 py-0.5 bg-muted text-muted-foreground ml-2">
+                          {barCountByState[estado.id]}
+                        </span>
+                      )}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
              
+              <Select
+                value={cityFilter}
+                onValueChange={(v) => setCityFilter(v)}
+              >
+                <SelectTrigger className="w-[180px] h-9 text-size-small border-border bg-background focus:ring-primary/40">
+                  <SelectValue placeholder="Ciudad" className="text-size-small color-primary" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem
+                    value="todas"
+                    className="text-size-small color-primary hover:bg-primary/10 hover:text-foreground transition-colors"
+                  >
+                    Todas las ciudades
+                  </SelectItem>
+                  {ciudades
+                    .filter((c) => stateId === "todos" || c.state_id === stateId)
+                    .map((ciudad) => (
+                      <SelectItem
+                        key={ciudad.id}
+                        value={ciudad.id}
+                        className="text-size-small color-primary hover:bg-primary/10 hover:text-foreground transition-colors"
+                      >
+                        {ciudad.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+
               <Select
                 value={statusFilter}
                 onValueChange={(v) => setStatusFilter(v as StatusFilter)}
@@ -183,11 +253,14 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
                 </SelectContent>
               </Select>
             </div>
+            </div>
+
+           
           </div>
         </header>
 
         {/* Content */}
-        <main className="px-6 py-8">
+        <main className="px-3 py-8">
           <div className="mb-6 flex items-center gap-2">
             <span
               className="inline-block h-3 w-0.5 rounded-full bg-accent"
@@ -224,11 +297,28 @@ export function BarListing({ initialBars, estados }: BarListingProps) {
               </p>
             </div>
           ) : (
-            <div className="grid gap-x-6 gap-y-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {filteredBars.map((bar) => (
-                <BarCard key={bar.id} bar={bar} />
-              ))}
-            </div>
+            <>
+              <div className="grid gap-x-2  gap-y-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                {displayedBars.map((bar) => (
+                  <BarCard key={bar.id} bar={bar} />
+                ))}
+              </div>
+
+              {hasMore && (
+                <div ref={sentinelRef} className="mt-10 flex justify-center">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="h-4 w-4 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+                    Cargando más bares...
+                  </div>
+                </div>
+              )}
+
+              {!hasMore && filteredBars.length > PAGE_SIZE && (
+                <p className="mt-10 text-center text-xs text-muted-foreground">
+                  Todos los {filteredBars.length} bares cargados
+                </p>
+              )}
+            </>
           )}
         </main>
       </div>
