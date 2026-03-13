@@ -5,8 +5,10 @@ import type { Bar, Participation } from "@/lib/types"
 import { useParticipations } from "@/lib/use-participations"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import { Upload, X, CheckCircle2, ImageIcon, Pencil } from "lucide-react"
+import { Upload, X, CheckCircle2, ImageIcon, Pencil, MapPin } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
+
 
 interface ParticipationModalProps {
   bar: Bar
@@ -94,25 +96,30 @@ export function ParticipationModal({ bar, open, onOpenChange }: ParticipationMod
     "bg-white/20 border-white/30 text-white placeholder:text-white/60 focus-visible:ring-white/50 focus-visible:border-white/60"
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}  >
       <DialogContent
-        className="p-0 border-0 overflow-hidden bg-primary  w-[90%]"
-        style={{ maxWidth: "400px" }}
+        className="p-0 border-0 overflow-hidden bg-primary  w-[90%] "
+        style={{ maxWidth: "400px", borderRadius: "32px" }}
       >
         <DialogTitle className="sr-only">
           {existing ? "Editar participacion" : "Registrar participacion"}
         </DialogTitle>
 
         <div className="relative z-10 px-6 pt-6 pb-2">
-          <p className="text-size-small text-white uppercase tracking-widest mb-1">
-            {bar.city}
-          </p>
+          
           <h2
             className="heading-style-h2 uppercase font-medium text-white leading-tight"
             style={{ fontFamily: "var(--font-heading), sans-serif" }}
           >
             {bar.name}
           </h2>
+          <p className="text-size-small text-white uppercase tracking-widest mb-1">
+            {bar.state_id} | {bar.city_id}
+          </p>
+          <Link href={bar.google_maps_url ?? ""} target="_blank" className="text-size-small text-white mt-1 flex items-center gap-1">
+            <MapPin className="size-4 min-w-5 hidden md:block" /> {bar.address}
+          </Link>
+          
         </div>
 
         <div className="relative z-10 px-6 pb-6 overflow-y-auto max-h-[70vh]">

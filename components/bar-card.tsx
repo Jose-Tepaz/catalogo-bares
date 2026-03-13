@@ -100,7 +100,7 @@ export function BarCard({ bar }: BarCardProps) {
               <span className="text-size-small text-foreground">{bar.city}</span>
           
            
-              <span className="flex items-start gap-1.5"> <MapPin className="size-5 min-w-5" /> {bar.address}</span>
+              <span className="flex items-start gap-1.5 text-size-tiny"> <MapPin className="size-4 min-w-5 hidden md:block" /> {bar.address}</span>
             </p>
           </div>
         </div>
